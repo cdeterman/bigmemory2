@@ -1617,9 +1617,12 @@ resizeBM <- function(obj, nRow, nCol, ...){
   newRows <- info$totalRows + nRow
   newCols <- info$totalCols + nCol
   
-  if(info$totalRows*info$totalCols != newRows*newCols){
-    stop("Error: new dimensions product must equal old dimensions product")
-  }
+  # Check if want to only allow reshaping instead of increasing overall size
+  # Currently unable to add rows.
+  
+#   if(info$totalRows*info$totalCols != newRows*newCols){
+#     stop("Error: new dimensions product must equal old dimensions product")
+#   }
   
   typeLength <- NULL
   if (info$type == 'char') typeLength <- 1
@@ -1632,7 +1635,7 @@ resizeBM <- function(obj, nRow, nCol, ...){
     stop("The readOnly argument must be of type logical")
   }
   
-  address <- .Call('CResizeSharedBigMatrix', B@address, info$sharedName, 
+  address <- .Call('CResizeSharedBigMatrix', obj@address, info$sharedName, 
                    newRows, newCols, as.character(info$rowNames), 
                    as.character(info$colNames), as.integer(typeLength), info$separated,
                    readOnly)
